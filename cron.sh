@@ -1,5 +1,5 @@
 #!/bin/bash
 
 cd ~/estates_appsheet
-echo "Hello World!"
+python3 run.py >> cron.log
 exit 0
