@@ -44,8 +44,9 @@ if __name__ == "__main__":
 
     filename = LOG_FILE
     if os.path.exists(filename):
-        with open(filename, "r") as f:
+        with open(filename, "r", encoding="utf-8", newline=None) as f:
             body = f.read()
+            body = body.replace("\n", "<br>")
     else:
         body = ""
 
