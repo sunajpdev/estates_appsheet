@@ -1,4 +1,5 @@
 *.csv
+*.log
 __pycache__
 tmp/*.csv
 .vscode/launch.json
