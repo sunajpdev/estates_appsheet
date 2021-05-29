@@ -1,0 +1,10 @@
+*.csv
+__pycache__
+tmp
+.vscode/launch.json
+mail.ini
+estate.ipynb
+init_aws_lightsail.sh
+.vscode/settings.json
+estate.ipynb
+wsl2-docker 開発環境構築.md
