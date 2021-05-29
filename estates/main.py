@@ -1,7 +1,6 @@
 import datetime
 import requests
 from bs4 import BeautifulSoup
-import smtplib
 import hashlib
 import re
 import pandas as pd
@@ -10,10 +9,6 @@ from pathlib import Path
 import time
 import os
 
-
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.application import MIMEApplication
 
 from estates import get_google_spreadsheet
 
@@ -205,32 +200,6 @@ def to_csv(estates, filename):
     df.to_csv(filename, index=False)
 
 
-# メッセージの作成 htmlmail
-def create_message(from_addr, to_addr, subject, body, filename=""):
-    msg = MIMEMultipart()
-    msg["Subject"] = subject
-    msg["From"] = from_addr
-    msg["To"] = to_addr
-    msg.attach(MIMEText(body, "html"))
-    # 添付ファイル処理
-    if filename:
-        with open(filename, "rb") as f:
-            mb = MIMEApplication(f.read())
-        mb.add_header("Content-Disposition", "attachment", filename=filename)
-        msg.attach(mb)
-    return msg
-
-
-# メールの送信
-def send_mail(msg):
-    with smtplib.SMTP("smtp.gmail.com", 587) as server:
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
-        server.login(my_addr, my_pass)
-        server.send_message(msg)
-
-
 def create_time_check(filename):
     """ CSV取得から１時間経過していなかったらFalse """
 
@@ -267,11 +236,6 @@ def main(title, get_url):
         new_estates = get_google_spreadsheet.append_new_estate(filename)
     except:
         pass
-
-    # if estates:
-    #     body = ""
-    #     msg = create_message(my_addr, my_addr, "Estatesおしらせ", body, filename)
-    #     send_mail(msg)
 
     print("### 処理完了 ###")
 
