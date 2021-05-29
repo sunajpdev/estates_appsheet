@@ -1,6 +1,6 @@
 *.csv
 __pycache__
-tmp
+tmp/*.csv
 .vscode/launch.json
 mail.ini
 estate.ipynb
