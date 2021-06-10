@@ -19,6 +19,10 @@ keyfile = "python-web-getter-4f9bb7bee43d.json"
 # 認証情報設定
 credentials = ServiceAccountCredentials.from_json_keyfile_name(keyfile, scope)
 
+<<<<<<< HEAD
+=======
+# TODO: 認証情報をiniファイルに移動させる
+>>>>>>> development
 # OAuth2の資格情報を使用してGoogle APIにログインします。
 gc = gspread.authorize(credentials)
 

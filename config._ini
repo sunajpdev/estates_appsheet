@@ -1,0 +1,13 @@
+[MAIL]
+MailAddress =mail
+MailPass =pass
+
+[LOG]
+DefaultLog =cron.log
+
+[DB]
+database=postgresql
+user=postgres
+password=hoge
+host=localhost
+dbname=estates_appsheet
