@@ -1,19 +1,11 @@
-# WSL2開発緩急設定
+# Appsheet Postgresql
 
 [WSL2を使ってWindowsでMisskey開発をはじめよう | Misskey Site!](https://misskey-site.com/posts/wsl2-dev-misskey)
 
 # 目次 {ignore=true}
+
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
-<!-- code_chunk_output -->
-
-- [WSL2開発緩急設定](#wsl2開発緩急設定)
-- [「保留」 WSLにlocalhostで接続できるように](#保留-wslにlocalhostで接続できるように)
-- [必要パッケージインストール](#必要パッケージインストール)
-- [PostgreSQLのセットアップ](#postgresqlのセットアップ)
-  - [初期設定](#初期設定)
-
-<!-- /code_chunk_output -->
 
 # 「保留」 WSLにlocalhostで接続できるように
 
@@ -145,19 +137,88 @@ $ sudo tail -f /var/log/postgresql/postgresql-13-main.log
 
 ```
 import configparser
+
 ini = configparser.ConfigParser()
-ini.read('config.ini', encoding='utf-8')
+ini.read("config.ini", encoding="utf-8")
 
 from sqlalchemy import create_engine, text
-database, user, password, host, dbname = \
-    ini.get('DB', 'database'), \
-    ini.get('DB', 'user'), \
-    ini.get('DB', 'password'), \
-    ini.get('DB', 'host'), \
-    ini.get('DB', 'dbname')
-url = f'{database}://{user}:{password}@{host}/{dbname}'
+
+database, user, password, host, dbname = (
+    ini.get("DB", "database"),
+    ini.get("DB", "user"),
+    ini.get("DB", "password"),
+    ini.get("DB", "host"),
+    ini.get("DB", "dbname"),
+)
+url = f"{database}://{user}:{password}@{host}/{dbname}"
 
 engine = create_engine(url)
 conn = engine.connect().connection
 
+
+import pandas as pd
+import time
+
+start = time.time()
+
+df = pd.read_csv("tmp/_gs.csv")
+
+rows = df.to_dict(orient="records")
+
+sql = text(
+    "\
+    INSERT INTO estates( \
+        id, note, price, shop, place, prefecture, city, station, route, work, area, \
+        buildingarea, ldk, buildingyear, url) \
+    VALUES( \
+        :id, :note, :price, :shop, :place, :prefecture, :city, :station, :route, :work, :area,\
+        :buildingarea, :ldk, :buildingyear, :url) \
+    "
+)
+
+for row in rows:
+    try:
+        engine.execute(sql, row)
+    except Exception as e:
+        print(e)
+
+end = time.time()
+print(end - start, "s")
+
 ```
+
+
+# appsheet からの接続 
+## ODataとは？
+
+Salesforce連携のためのOData入門 : https://www.slideshare.net/shunjikonishi/salesforceodata
+
+特に使わなくても行けそうか？
+
+## AppSheet マニュアル on-premises DB
+オンプレミス データベースへの接続 | AppSheet ヘルプセンター : https://help.appsheet.com/en/articles/2213968-connecting-to-an-on-premises-database
+
+###　方法１ IPを許可 一番かんたんな方法
+
+接続先のIPを公開する事
+
+- メリット：かんたん
+- デメリット：Firewallを開けなければいけない
+
+公開するIP
+
+IP アドレスとファイアウォール情報の管理 | AppSheet ヘルプセンター : https://help.appsheet.com/en/articles/1658319-managing-ip-addresses-and-firewall-information
+
+
+Add a new data source で CloudDatabase を選べば良い
+
+### 方法２ DreamFactory の利用
+
+- 別サーバを建ててインストールする方法
+- 同一サーバにインストールする方法
+インスタレーション - DreamFactory : https://wiki.dreamfactory.com/DreamFactory/Installation
+
+
+一旦保留！　まず取得データをpostgreに登録して、それをGoogleスプレッドシートに再登録する仕組みで実装する
+
+# 新規取得データをDBに登録
