@@ -11,3 +11,8 @@ user=postgres
 password=hoge
 host=localhost
 dbname=estates_appsheet
+
+[GSHEET]
+keyfile=filepath
+sheetname=estates
+spreadsheet_key=[googlespreadsheetの共有キー]

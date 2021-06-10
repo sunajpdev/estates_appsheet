@@ -3,6 +3,13 @@ import json
 import time
 import pandas as pd
 
+# 環境設定読み込み
+import configparser
+
+ini = configparser.ConfigParser()
+ini.read("config.ini", encoding="utf-8")
+
+
 # Googleスプレッドシート関係の設定
 # ServiceAccountCredentials：Googleの各サービスへアクセスできるservice変数を生成します。
 from oauth2client.service_account import ServiceAccountCredentials
@@ -14,28 +21,26 @@ scope = [
 ]
 
 # ダウンロードしたjsonファイル名をクレデンシャル変数に設定（秘密鍵、Pythonファイルから読み込みしやすい位置に置く）
-keyfile = "python-web-getter-4f9bb7bee43d.json"
+# keyfile = "python-web-getter-4f9bb7bee43d.json"
+keyfile = ini.get("GSHEET", "keyfile")
 
 # 認証情報設定
 credentials = ServiceAccountCredentials.from_json_keyfile_name(keyfile, scope)
 
-# TODO: 認証情報をiniファイルに移動させる
 # OAuth2の資格情報を使用してGoogle APIにログインします。
 gc = gspread.authorize(credentials)
 
 # 処理をするスプレッドシートの名称
-SHEET_NAME = "estates"
+SHEET_NAME = ini.get("GSHEET", "sheetname")
 
 # 比較対象として一時ダウンロードするグーグルスプレッドシート
 CSVFILENAME = "tmp/_gs.csv"
 
 # 共有設定したスプレッドシートキーを変数[SPREADSHEET_KEY]に格納する。
-SPREADSHEET_KEY = "1J4C3hCKg3GB_KdVafctoVHDwhypxf73qU8H3FiNKfmo"
+SPREADSHEET_KEY = ini.get("GSHEET", "spreadsheet_key")
 
 # 共有設定したスプレッドシートのシート1を開く
 worksheet = gc.open_by_key(SPREADSHEET_KEY).sheet1
-
-from oauth2client.service_account import ServiceAccountCredentials
 
 # GoogleSpreadSheetsから取り込む
 def download_as_df(sheet_id, sheet_name):
@@ -50,7 +55,6 @@ def download_as_df(sheet_id, sheet_name):
         credentials=credentials,
         start_cell="A1",
     )
-    # df["price"] = df["price"].astype(int)
     return df
 
 
