@@ -98,7 +98,7 @@ $ psql -U postgres -d estates_appsheet -h localhost
 CREATE TABLE estates  (
   id text primary key,
   note text,
-  price money,
+  price numeric(8,0),
   shop text, 
   place text, 
   prefecture text, 
@@ -106,16 +106,16 @@ CREATE TABLE estates  (
   station text, 
   route text, 
   work text, 
-  area money, 
-  buildingarea money, 
+  area numeric(8,2), 
+  buildingarea numeric(8,2), 
   buildingyear text, 
   ldk text, 
   url text, 
   created timestamp
 );
 
+CREATE INDEX on estates(prefecture, city, station, route);
 
-CREATE INDEX on estates(prefectures, city, station, route);
 ```
 
 ## python psycopg2から接続できるようにする pg_hba

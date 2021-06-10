@@ -1,6 +1,6 @@
 [MAIL]
-MailAddress =sunajp.dev@gmail.com
-MailPass =ccpwhuxywmunskoi
+MailAddress =mail
+MailPass =pass
 
 [LOG]
 DefaultLog =cron.log
