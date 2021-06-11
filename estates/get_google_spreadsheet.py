@@ -4,11 +4,13 @@ import time
 import pandas as pd
 
 # 環境設定読み込み
-import configparser
+# import configparser
 
-ini = configparser.ConfigParser()
-ini.read("config.ini", encoding="utf-8")
+# ini = configparser.ConfigParser()
+# ini.read("config.ini", encoding="utf-8")
 
+
+from mylib import MyConfig as cf
 
 # Googleスプレッドシート関係の設定
 # ServiceAccountCredentials：Googleの各サービスへアクセスできるservice変数を生成します。
@@ -22,7 +24,7 @@ scope = [
 
 # ダウンロードしたjsonファイル名をクレデンシャル変数に設定（秘密鍵、Pythonファイルから読み込みしやすい位置に置く）
 # keyfile = "python-web-getter-4f9bb7bee43d.json"
-keyfile = ini.get("GSHEET", "keyfile")
+keyfile = cf.ini.get("GSHEET", "keyfile")
 
 # 認証情報設定
 credentials = ServiceAccountCredentials.from_json_keyfile_name(keyfile, scope)
@@ -31,13 +33,13 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(keyfile, scope)
 gc = gspread.authorize(credentials)
 
 # 処理をするスプレッドシートの名称
-SHEET_NAME = ini.get("GSHEET", "sheetname")
+SHEET_NAME = cf.ini.get("GSHEET", "sheetname")
 
 # 比較対象として一時ダウンロードするグーグルスプレッドシート
 CSVFILENAME = "tmp/_gs.csv"
 
 # 共有設定したスプレッドシートキーを変数[SPREADSHEET_KEY]に格納する。
-SPREADSHEET_KEY = ini.get("GSHEET", "spreadsheet_key")
+SPREADSHEET_KEY = cf.ini.get("GSHEET", "spreadsheet_key")
 
 # 共有設定したスプレッドシートのシート1を開く
 worksheet = gc.open_by_key(SPREADSHEET_KEY).sheet1

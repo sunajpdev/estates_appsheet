@@ -4,17 +4,18 @@ ini = configparser.ConfigParser()
 ini.read("config.ini", encoding="utf-8")
 
 from sqlalchemy import create_engine, text
+from mylib import MyConfig as cf
 
 
 class Mydb:
     def __init__(self):
         """ クラス生成時にDBに接続するengineを追加 """
         database, user, password, host, dbname = (
-            ini.get("DB", "database"),
-            ini.get("DB", "user"),
-            ini.get("DB", "password"),
-            ini.get("DB", "host"),
-            ini.get("DB", "dbname"),
+            cf.ini.get("DB", "database"),
+            cf.ini.get("DB", "user"),
+            cf.ini.get("DB", "password"),
+            cf.ini.get("DB", "host"),
+            cf.ini.get("DB", "dbname"),
         )
         url = f"{database}://{user}:{password}@{host}/{dbname}"
         self.engine = create_engine(url)
