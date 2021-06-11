@@ -8,6 +8,7 @@ from sqlalchemy import create_engine, text
 
 class Mydb:
     def __init__(self):
+        """ クラス生成時にDBに接続するengineを追加 """
         database, user, password, host, dbname = (
             ini.get("DB", "database"),
             ini.get("DB", "user"),
@@ -19,5 +20,37 @@ class Mydb:
         self.engine = create_engine(url)
         self.text = text
 
-    def return_true(self):
-        return True
+    def insert_estate(self, estate_dict):
+        """ 顧客dictを渡したらINSERT SQLを生成して実行。成功時True 失敗時はエラー情報"""
+
+        sql = self.text(
+            "\
+            INSERT INTO estates( \
+                id, note, price, shop, place, prefecture, city, station, route, work, area, \
+                buildingarea, ldk, buildingyear, url) \
+            VALUES( \
+                :id, :note, :price, :shop, :place, :prefecture, :city, :station, :route, :work, :area,\
+                :buildingarea, :ldk, :buildingyear, :url) \
+             ON CONFLICT DO NOTHING;\
+            "
+        )
+
+        try:
+            self.engine.execute(sql, estate_dict)
+            result = estate_dict["id"]
+        except Exception as e:
+            print(e)
+            return False
+
+        return result
+
+    def delete_estate(self, id):
+        """ 指定idのestateを削除 成功:True 失敗:エラー情報"""
+
+        sql = self.text("DELETE FROM estates WHERE id=:id;")
+        try:
+            self.engine.execute(sql, id=id)
+            return True
+        except Exception as e:
+            print(e)
+            return False
