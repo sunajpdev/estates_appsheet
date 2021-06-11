@@ -17,6 +17,7 @@ class Mydb:
         )
         url = f"{database}://{user}:{password}@{host}/{dbname}"
         self.engine = create_engine(url)
+        self.text = text
 
     def return_true(self):
         return True
