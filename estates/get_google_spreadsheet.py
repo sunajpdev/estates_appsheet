@@ -10,7 +10,9 @@ import pandas as pd
 # ini.read("config.ini", encoding="utf-8")
 
 
-from mylib import MyConfig as cf
+from mylib.MyConfig import MyConfig
+
+cf = MyConfig()
 
 # Googleスプレッドシート関係の設定
 # ServiceAccountCredentials：Googleの各サービスへアクセスできるservice変数を生成します。
