@@ -17,6 +17,5 @@ class MyConfig:
         else:
             config_filename = env["Development"]["config_filename"]
 
-        print(config_filename)
         self.ini.read(config_filename, encoding="utf-8")
 
