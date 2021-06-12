@@ -1,6 +1,6 @@
 import configparser
 
-import sqlalchemy
+import pandas as pd
 
 ini = configparser.ConfigParser()
 ini.read("config.ini", encoding="utf-8")
@@ -84,3 +84,11 @@ class Mydb:
 
         return result
 
+    def all_estate_to_csv(self, filename):
+        """ DBからすべてのEstateを取得してCSVに保存する """
+
+        sql = "SELECT * from estates ORDER BY created"
+        df = pd.read_sql(sql, self.engine)
+        df.to_csv(filename, index=False)
+
+        return filename

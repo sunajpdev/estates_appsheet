@@ -103,3 +103,11 @@ class MydbTest(ut.TestCase):
         res = self.mydb.insert_estate_new_data(self.estate1)
         self.assertEqual(False, res)
 
+    def test_all_estate_to_csv(self):
+        """ すべてのestateをCSVに保存 """
+
+        filename = "./tmp/all_estate.csv"
+        res = self.mydb.all_estate_to_csv(filename)
+
+        self.assertEqual(filename, res)
+
