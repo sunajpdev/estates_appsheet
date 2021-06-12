@@ -64,14 +64,42 @@ class MydbTest(ut.TestCase):
         res = self.mydb.delete_estate(id)
         self.assertTrue(res)
 
+    def test_record_count(self):
+        """ idを指定してレコード数を取得する """
+
+        # 存在しないデータは0
+        row = self.mydb.record_count("estates", "hoge")
+        self.assertEqual(0, row)
+
+        # 存在するデータはレコード数を返す
+        self.mydb.insert_estate(self.estate1)
+        row = self.mydb.record_count("estates", "test")
+        self.assertEqual(1, row)
+
     def test_insert_estate(self):
         """ 挿入のテスト """
 
         # 一度目はTrue
         id = self.estate1["id"]
+        ## 事前に削除
+        self.mydb.delete_estate(id)
         res = self.mydb.insert_estate(self.estate1)
         self.assertEqual(id, res)
-        # キーが重複した場合はTrue以外
+        # ２回目の挿入はFalse
         res = self.mydb.insert_estate(self.estate1)
-        self.assertNotEqual(True, res)
+        self.assertEqual(False, res)
+
+    def test_insert_estate_new_data(self):
+        """ 新規レコードが重複したケースと重複していないケース """
+
+        id = self.estate1["id"]
+        self.mydb.delete_estate(id)
+
+        # 初回はidが返る
+        res = self.mydb.insert_estate_new_data(self.estate1)
+        self.assertEqual(id, res)
+
+        # 重複の場合はFalseが返る
+        res = self.mydb.insert_estate_new_data(self.estate1)
+        self.assertEqual(False, res)
 

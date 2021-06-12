@@ -11,6 +11,10 @@ import os
 
 
 from estates import get_google_spreadsheet
+from mylib.Mydb import Mydb
+
+db = Mydb()
+
 
 sumo_domain = "https://suumo.jp/"
 
@@ -220,11 +224,28 @@ def create_time_check(filename):
         return False
 
 
+def insert_estate_csv(csv_filename):
+    """ 取得したCSVをDBに登録 登録した件数を返す"""
+
+    df = pd.read_csv(csv_filename)
+    rows = df.to_dict(orient="records")
+
+    cnt = 0
+    for row in rows:
+        res = db.insert_estate_new_data(row)
+        if res:
+            cnt += 1
+
+    return cnt
+
+
 def main(title, get_url):
     print("### 処理開始 ###")
     # 速度対策で、処理が５時間以内にされている場合は、CSV取得処理をスキップして処理続行
     filename = "./tmp/_" + title + ".csv"
     if create_time_check(filename):
+        # 処理前に3秒間隔をあける
+        time.sleep(3)
         estates = picup_estates(get_estate(get_url))
         to_csv(estates, filename)
 
@@ -232,10 +253,13 @@ def main(title, get_url):
         print("### SKIP ###")
 
     # 取得CSVからGSに登録、処理が失敗した場合はスキップして継続
-    try:
-        new_estates = get_google_spreadsheet.append_new_estate(filename)
-    except:
-        pass
+    # try:
+    # new_estates = get_google_spreadsheet.append_new_estate(filename)
+    # TODO: DBに登録する
+    insert_count = insert_estate_csv(filename)
+    print("INSERT: ", insert_count)
+    # except Exception as e:
+    #     print("[ERROR]", e)
 
     print("### 処理完了 ###")
 

@@ -178,3 +178,11 @@ class MainTest(ut.TestCase):
         self.assertEqual(estates[0]["route"], "妙高はねうまライン")
         self.assertEqual(estates[0]["area"], 386.86)
         self.assertEqual(estates[0]["buildingarea"], 175.69)
+
+    def test_insert_estate_to_csv(self):
+        """ CSVからDBに登録する """
+
+        csv_filename = "tests/csv/test_data01.csv"
+        res = main.insert_estate_csv(csv_filename)
+        self.assertEqual(0, res)
+

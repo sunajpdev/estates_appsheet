@@ -1,11 +1,13 @@
+DROP TABLE estates;
+
 CREATE TABLE estates  (
   id text primary key,
   note text,
-  price numeric(8,0),
+  price numeric(8,0) not null,
   shop text, 
-  place text, 
-  prefecture text, 
-  city text, 
+  place text not null, 
+  prefecture text not null, 
+  city text not null, 
   station text, 
   route text, 
   work text, 
@@ -14,7 +16,7 @@ CREATE TABLE estates  (
   buildingyear text, 
   ldk text, 
   url text, 
-  created timestamp
+  created timestamp not null default current_timestamp
 );
 
 CREATE INDEX on estates(prefecture, city, station, route);
