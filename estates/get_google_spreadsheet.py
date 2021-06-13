@@ -3,13 +3,6 @@ import json
 import time
 import pandas as pd
 
-# 環境設定読み込み
-# import configparser
-
-# ini = configparser.ConfigParser()
-# ini.read("config.ini", encoding="utf-8")
-
-
 from mylib.MyConfig import MyConfig
 
 cf = MyConfig()
@@ -111,3 +104,22 @@ def append_new_estate(csv_filename):
     df.to_csv(CSVFILENAME, index=False)
 
     return df_diff
+
+
+def set_csv_to_sheet(csv_path, sheet_name):
+    """ CSVデータによりシートを一括で書き換える """
+    import csv
+
+    workbook = gc.open_by_key(SPREADSHEET_KEY)
+    result = True
+    try:
+        workbook.values_update(
+            sheet_name,
+            params={"valueInputOption": "USER_ENTERED"},
+            body={"values": list(csv.reader(open(csv_path)))},
+        )
+    except Exception as e:
+        print("### ERROR ###", e)
+        result = False
+
+    return result

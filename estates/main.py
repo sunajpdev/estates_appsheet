@@ -10,7 +10,7 @@ import time
 import os
 
 
-from estates import get_google_spreadsheet
+from estates import get_google_spreadsheet as gs
 from mylib.Mydb import Mydb
 
 db = Mydb()
@@ -239,27 +239,25 @@ def insert_estate_csv(csv_filename):
     return cnt
 
 
-def main(title, get_url):
-    print("### 処理開始 ###")
+def update_sheet(csv_filename, sheetname):
+    """ postgresqlの最新データでsheetの内容を書き換える """
+
+    db.all_estate_to_csv(csv_filename)
+    gs.set_csv_to_sheet(csv_filename, sheetname)
+
+
+def web_to_csv_and_db(get_url, csv_filename):
     # 速度対策で、処理が５時間以内にされている場合は、CSV取得処理をスキップして処理続行
-    filename = "./tmp/_" + title + ".csv"
-    if create_time_check(filename):
+    if create_time_check(csv_filename):
         # 処理前に3秒間隔をあける
         time.sleep(3)
         estates = picup_estates(get_estate(get_url))
-        to_csv(estates, filename)
+        to_csv(estates, csv_filename)
+
+        result = insert_estate_csv(csv_filename)
 
     else:
-        print("### SKIP ###")
+        result = "SKIP"
 
-    # 取得CSVからGSに登録、処理が失敗した場合はスキップして継続
-    # try:
-    # new_estates = get_google_spreadsheet.append_new_estate(filename)
-    # TODO: DBに登録する
-    insert_count = insert_estate_csv(filename)
-    print("INSERT: ", insert_count)
-    # except Exception as e:
-    #     print("[ERROR]", e)
-
-    print("### 処理完了 ###")
+    return result
 
