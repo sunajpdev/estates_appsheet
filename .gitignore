@@ -2,6 +2,7 @@
 *.log
 *.bak
 __pycache__
+note/*
 tmp/*.csv
 .vscode/launch.json
 mail.ini

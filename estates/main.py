@@ -10,8 +10,8 @@ import time
 import os
 
 
-from estates import get_google_spreadsheet as gs
-from mylib.Mydb import Mydb
+from estates import sheet as gs
+from estates.Mydb import Mydb
 
 db = Mydb()
 

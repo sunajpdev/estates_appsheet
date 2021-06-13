@@ -1,7 +1,7 @@
 """ メイン処理のテスト """
 import unittest as ut
 from estates import main
-from mylib.Mydb import Mydb
+from estates.Mydb import Mydb
 
 from bs4 import BeautifulSoup
 
@@ -15,14 +15,14 @@ class MainTest(ut.TestCase):
         mydb.engine.execute("DELETE FROM estates;")
 
     def test_get_estate(self):
-        """ 不動産情報を取得する """
+        """不動産情報を取得する"""
 
         url_yokosuka = "https://suumo.jp/jj/bukken/ichiran/JJ012FC001/?ar=030&bs=021&sc=14201&ta=14&po=1&pj=2&pc=100"
         estate_elems = main.get_estate(url_yokosuka)
         self.assertNotEqual(estate_elems, False)
 
     def test_create_hash(self):
-        """ ハッシュの生成を確認 """
+        """ハッシュの生成を確認"""
 
         txt = ""
         hash = main.create_hash(txt)
@@ -37,7 +37,7 @@ class MainTest(ut.TestCase):
         )
 
     def test_estate_tag_route_station_work(self):
-        """ 駅などの情報から、駅名、路線名、所要時間を抽出 """
+        """駅などの情報から、駅名、路線名、所要時間を抽出"""
 
         t = "妙高はねうまライン「高田」徒歩32分"
         route, station, work = main.estate_tag_route_station_work(t)
@@ -77,7 +77,7 @@ class MainTest(ut.TestCase):
         self.assertEqual(work, "徒歩4分")
 
     def test_estate_price(self):
-        """ 価格取得処理のテスト """
+        """価格取得処理のテスト"""
         filename = "tests/html/estates.html"
         estates = main.html_to_estates(open(filename))
         # 通常ケース
@@ -91,7 +91,7 @@ class MainTest(ut.TestCase):
         self.assertEqual(price, 2580)
 
     def test_estate_price_form_str(self):
-        """ いろいろな価格文字列のケースを想定 """
+        """いろいろな価格文字列のケースを想定"""
 
         s = ""
         price = main.estate_price_form_str(s)
@@ -135,7 +135,7 @@ class MainTest(ut.TestCase):
         self.assertEqual(price, 2356)
 
     def test_estate_area_buildingarea_to_int(self):
-        """ 面積を含む数字文字列から面積を数値で取得する """
+        """面積を含む数字文字列から面積を数値で取得する"""
 
         s = "455.71m2（137.85坪）（登記）"
         i = main.estate_area_buildingarea_to_int(s)
@@ -147,7 +147,7 @@ class MainTest(ut.TestCase):
         self.assertEqual(i, 0)
 
     def test_picup_estates(self):
-        """ 取得したHTMLから不動産情報を抽出 全体的なテストなので一番下"""
+        """取得したHTMLから不動産情報を抽出 全体的なテストなので一番下"""
 
         filename = "tests/html/yokosuka.html"
         soup = main.html_to_estates(open(filename))
@@ -186,7 +186,7 @@ class MainTest(ut.TestCase):
         self.assertEqual(estates[0]["buildingarea"], 175.69)
 
     def test_insert_estate_to_csv(self):
-        """ CSVからDBに登録する """
+        """CSVからDBに登録する"""
 
         # データがある場合
         csv_filename = "tests/csv/test_data01.csv"
@@ -197,5 +197,3 @@ class MainTest(ut.TestCase):
         csv_filename = "tests/csv/test_nodata.csv"
         res = main.insert_estate_csv(csv_filename)
         self.assertEqual(0, res)
-
-

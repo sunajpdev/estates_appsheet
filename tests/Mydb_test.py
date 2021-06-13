@@ -1,5 +1,5 @@
 import unittest as ut
-from mylib.Mydb import Mydb
+from estates.Mydb import Mydb
 
 
 class MydbTest(ut.TestCase):
@@ -34,12 +34,12 @@ class MydbTest(ut.TestCase):
         self.engine = self.mydb.engine
 
     def test_init(self):
-        """ mydbを生成した際DBと接続されているか確認 """
+        """mydbを生成した際DBと接続されているか確認"""
         res = self.engine
         self.assertNotEqual(None, res)
 
     def test_delete_estate(self):
-        """ estate 削除 """
+        """estate 削除"""
 
         estate_del = {
             "id": "del",
@@ -69,7 +69,7 @@ class MydbTest(ut.TestCase):
         self.assertTrue(res)
 
     def test_record_count(self):
-        """ idを指定してレコード数を取得する """
+        """idを指定してレコード数を取得する"""
 
         # 存在しないデータは0
         row = self.mydb.record_count("estates", "hoge")
@@ -81,7 +81,7 @@ class MydbTest(ut.TestCase):
         self.assertEqual(1, row)
 
     def test_insert_estate(self):
-        """ 挿入のテスト """
+        """挿入のテスト"""
 
         # 一度目はTrue
         id = self.estate1["id"]
@@ -94,7 +94,7 @@ class MydbTest(ut.TestCase):
         self.assertEqual(False, res)
 
     def test_insert_estate_new_data(self):
-        """ 新規レコードが重複したケースと重複していないケース """
+        """新規レコードが重複したケースと重複していないケース"""
 
         id = self.estate1["id"]
         self.mydb.delete_estate(id)
@@ -108,10 +108,9 @@ class MydbTest(ut.TestCase):
         self.assertEqual(False, res)
 
     def test_all_estate_to_csv(self):
-        """ すべてのestateをCSVに保存 """
+        """すべてのestateをCSVに保存"""
 
         filename = "./tmp/all_estate.csv"
         res = self.mydb.all_estate_to_csv(filename)
 
         self.assertEqual(filename, res)
-

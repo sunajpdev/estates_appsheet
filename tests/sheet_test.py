@@ -1,5 +1,5 @@
 import unittest as ut
-from estates import get_google_spreadsheet as gs
+from estates import sheet as gs
 
 from bs4 import BeautifulSoup
 
@@ -8,7 +8,7 @@ class GoogleSpreadSheetTest(ut.TestCase):
     """GoogleSpreadSheetのテスト"""
 
     def test_set_csv_to_sheet(self):
-        """ DBから取得したデータをGoogleSpreadSheetに登録する """
+        """DBから取得したデータをGoogleSpreadSheetに登録する"""
 
         #  ファイルがある場合はTrue
         csv_filename = "tests/csv/test_data01.csv"

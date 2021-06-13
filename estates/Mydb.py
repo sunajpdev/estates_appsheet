@@ -6,14 +6,14 @@ ini = configparser.ConfigParser()
 ini.read("config.ini", encoding="utf-8")
 
 from sqlalchemy import create_engine, text, exc
-from mylib.MyConfig import MyConfig
+from settings import ReadIni
 
 
 class Mydb:
     def __init__(self):
-        """ クラス生成時にDBに接続するengineを追加 """
+        """クラス生成時にDBに接続するengineを追加"""
 
-        cf = MyConfig()
+        cf = ReadIni()
 
         database, user, password, host, dbname = (
             cf.ini.get("DB", "database"),
@@ -27,7 +27,7 @@ class Mydb:
         self.text = text
 
     def record_count(self, table, id):
-        """ レコードの有無をチェックする """
+        """レコードの有無をチェックする"""
 
         sql = self.text(f"SELECT * FROM {table} WHERE id=:id")
         res = self.engine.execute(sql, id=id)
@@ -35,7 +35,7 @@ class Mydb:
         return cnt
 
     def delete_estate(self, id):
-        """ 指定idのestateを削除 成功:True 失敗:エラー情報"""
+        """指定idのestateを削除 成功:True 失敗:エラー情報"""
 
         sql = self.text("DELETE FROM estates WHERE id=:id;")
         try:
@@ -46,9 +46,9 @@ class Mydb:
             return False
 
     def insert_estate_new_data(self, estate_dict):
-        """ データが重複していない場合のみ insert_estateを実行 
-            成功時: id
-            失敗時: False
+        """データが重複していない場合のみ insert_estateを実行
+        成功時: id
+        失敗時: False
         """
 
         id = estate_dict["id"]
@@ -60,9 +60,9 @@ class Mydb:
             return False
 
     def insert_estate(self, estate_dict):
-        """ 顧客dictを渡したらINSERT SQLを生成して実行。
-            成功時: id
-            失敗時: False"""
+        """顧客dictを渡したらINSERT SQLを生成して実行。
+        成功時: id
+        失敗時: False"""
 
         sql = self.text(
             "\
@@ -85,7 +85,7 @@ class Mydb:
         return result
 
     def all_estate_to_csv(self, filename):
-        """ DBからすべてのEstateを取得してCSVに保存する """
+        """DBからすべてのEstateを取得してCSVに保存する"""
 
         sql = "SELECT * from estates ORDER BY created"
         df = pd.read_sql(sql, self.engine)

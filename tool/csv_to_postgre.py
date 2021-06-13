@@ -6,7 +6,7 @@ ini.read("config.ini", encoding="utf-8")
 import pandas as pd
 import time
 
-from mylib.Mydb import Mydb
+from estate.Mydb import Mydb
 
 
 start = time.time()

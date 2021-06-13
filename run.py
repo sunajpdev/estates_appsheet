@@ -1,5 +1,4 @@
 from estates import main
-from estates import get_google_spreadsheet
 
 import settings_city
 
