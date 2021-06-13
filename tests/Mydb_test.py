@@ -24,8 +24,12 @@ class MydbTest(ut.TestCase):
         "url": "",
     }
 
+    def setUpModule(self):
+        # estatesを削除する
+        mydb = Mydb()
+        mydb.engine.execute("DELETE FROM estates;")
+
     def setUp(self):
-        print("setup")
         self.mydb = Mydb()
         self.engine = self.mydb.engine
 

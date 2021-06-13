@@ -227,7 +227,12 @@ def create_time_check(filename):
 def insert_estate_csv(csv_filename):
     """ 取得したCSVをDBに登録 登録した件数を返す"""
 
-    df = pd.read_csv(csv_filename)
+    # CSVファイルにデータがない場合対策
+    try:
+        df = pd.read_csv(csv_filename)
+    except Exception as e:
+        return 0
+
     rows = df.to_dict(orient="records")
 
     cnt = 0

@@ -1,12 +1,18 @@
 """ メイン処理のテスト """
 import unittest as ut
 from estates import main
+from mylib.Mydb import Mydb
 
 from bs4 import BeautifulSoup
 
 
 class MainTest(ut.TestCase):
     """Mainのテスト"""
+
+    def setUpModule(self):
+        # estatesを削除する
+        mydb = Mydb()
+        mydb.engine.execute("DELETE FROM estates;")
 
     def test_get_estate(self):
         """ 不動産情報を取得する """
@@ -182,7 +188,14 @@ class MainTest(ut.TestCase):
     def test_insert_estate_to_csv(self):
         """ CSVからDBに登録する """
 
+        # データがある場合
         csv_filename = "tests/csv/test_data01.csv"
         res = main.insert_estate_csv(csv_filename)
         self.assertEqual(0, res)
+
+        # データがない場合
+        csv_filename = "tests/csv/test_nodata.csv"
+        res = main.insert_estate_csv(csv_filename)
+        self.assertEqual(0, res)
+
 
