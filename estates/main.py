@@ -238,8 +238,8 @@ def insert_estate_csv(csv_filename):
     cnt = 0
     for row in rows:
         res = db.insert_estate_new_data(row)
-        print(row["price"], row["note"])
         if res:
+            print(row["price"], row["note"])
             cnt += 1
 
     return cnt
