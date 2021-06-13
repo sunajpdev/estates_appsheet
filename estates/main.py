@@ -57,7 +57,7 @@ def get_prefecture_city(content):
 
 
 def str_to_int(s):
-    """ 文字列を数値に変換して返す。変換できない場合は0を返す """
+    """文字列を数値に変換して返す。変換できない場合は0を返す"""
 
     if not s.isdecimal():
         try:
@@ -78,7 +78,7 @@ def estate_price(e):
 
 
 def estate_price_form_str(price_str):
-    """ 金額の文字列から数値としての価格を取得する（処理が複雑なので分離） """
+    """金額の文字列から数値としての価格を取得する（処理が複雑なので分離）"""
 
     # 円より後ろは無視
     if "円" in price_str:
@@ -100,7 +100,7 @@ def estate_price_form_str(price_str):
 
 
 def estate_shop(e):
-    """店舗情報を抽出 """
+    """店舗情報を抽出"""
     shop = e.select_one(".shopmore-title")
     if shop:
         shop = shop.getText().replace("\t", "").replace("\n", "").replace("\r", "")
@@ -111,7 +111,7 @@ def estate_shop(e):
 
 
 def estate_place(e):
-    """"場所と駅等を含む部分を返す """
+    """ "場所と駅等を含む部分を返す"""
     # ddが１つ余計にはいっている場合の対策
     dt_name = e.select(".dottable-line > dl > dt")[2].getText()
     if dt_name == "所在地":
@@ -141,7 +141,7 @@ def estate_tag_route_station_work(t):
 
 
 def estate_area_buildingarea_to_int(str):
-    """ 土地面積と建物面積を抽出し、数値として返す """
+    """土地面積と建物面積を抽出し、数値として返す"""
 
     if "m2" in str:
         str = str.split("m2")[0]
@@ -205,7 +205,7 @@ def to_csv(estates, filename):
 
 
 def create_time_check(filename):
-    """ CSV取得から１時間経過していなかったらFalse """
+    """CSV取得から１時間経過していなかったらFalse"""
 
     # ファイルが存在しない場合はTrue
     if os.path.isfile(filename) == False:
@@ -225,7 +225,7 @@ def create_time_check(filename):
 
 
 def insert_estate_csv(csv_filename):
-    """ 取得したCSVをDBに登録 登録した件数を返す"""
+    """取得したCSVをDBに登録 登録した件数を返す"""
 
     # CSVファイルにデータがない場合対策
     try:
@@ -238,6 +238,7 @@ def insert_estate_csv(csv_filename):
     cnt = 0
     for row in rows:
         res = db.insert_estate_new_data(row)
+        print(row["price"], row["note"])
         if res:
             cnt += 1
 
@@ -245,7 +246,7 @@ def insert_estate_csv(csv_filename):
 
 
 def update_sheet(csv_filename, sheetname):
-    """ postgresqlの最新データでsheetの内容を書き換える """
+    """postgresqlの最新データでsheetの内容を書き換える"""
 
     db.all_estate_to_csv(csv_filename)
     gs.set_csv_to_sheet(csv_filename, sheetname)
@@ -265,4 +266,3 @@ def web_to_csv_and_db(get_url, csv_filename):
         result = "SKIP"
 
     return result
-
