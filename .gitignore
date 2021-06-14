@@ -4,6 +4,7 @@
 __pycache__
 note/*
 tmp/*.csv
+.env
 .vscode/launch.json
 mail.ini
 estate.ipynb
