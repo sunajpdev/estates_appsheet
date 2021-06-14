@@ -1,17 +1,19 @@
-import configparser
+import sys
+import pathlib
 
-ini = configparser.ConfigParser()
-ini.read("config.ini", encoding="utf-8")
+# base.pyのあるディレクトリの絶対パスを取得
+current_dir = pathlib.Path(__file__).resolve().parent
+# モジュールのあるパスを追加
+sys.path.append(str(current_dir) + "/../")
 
 import pandas as pd
 import time
 
-from estate.Mydb import Mydb
-
+from estates.Mydb import Mydb
 
 start = time.time()
 
-df = pd.read_csv("tmp/_gs.csv")
+df = pd.read_csv("backup.csv")
 
 rows = df.to_dict(orient="records")
 

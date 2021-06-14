@@ -4,6 +4,8 @@
 __pycache__
 note/*
 tmp/*.csv
+tmp/*.py
+
 .env
 .vscode/launch.json
 mail.ini
@@ -13,5 +15,4 @@ init_aws_lightsail.sh
 estate.ipynb
 wsl2-docker 開発環境構築.md
 config.ini
-
 config_dev.ini
