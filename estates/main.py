@@ -12,6 +12,8 @@ import os
 
 from estates import sheet as gs
 from estates.Mydb import Mydb
+from mylib.address import Address
+from mylib.mypandas import MyPandas as mp
 
 db = Mydb()
 
@@ -32,28 +34,6 @@ def html_to_estates(html_text):
     soup = BeautifulSoup(html_text, "html.parser")
     estates = soup.select("div.property_unit")
     return estates
-
-
-# 都道府県と市町村を抽出
-def get_prefecture_city(content):
-
-    pattern = "(...??[都道府県])((?:旭川|伊達|石狩|盛岡|奥州|田村|南相馬|那須塩原|東村山|武蔵村山|羽村|十日町|上越|富山|野々市|大町|蒲郡|四日市|姫路|大和郡山|廿日市|下松|岩国|田川|大村)市|.+?郡(?:玉村|大町|.+?)[町村]|.+?市.+?区|.+?[市区町村])(.+)"
-
-    result = re.match(pattern, content)
-    prefecture = ""
-    city = ""
-    if result:
-        prefecture = result.group(1)
-        city = result.group(2)
-    else:
-        # 都道府県のみ
-        pattern2 = "(...??[都道府県])"
-        result_prefecture = re.match(pattern2, content)
-
-        if result_prefecture:
-            prefecture = result_prefecture.group(1)
-
-    return prefecture, city
 
 
 def str_to_int(s):
@@ -166,7 +146,7 @@ def picup_estates(estate_elems):
 
         t, h["place"] = estate_place(e)
         # 都道府県・市町村を取得
-        h["prefecture"], h["city"] = get_prefecture_city(h["place"])
+        h["prefecture"], h["city"] = Address.address_to_prefecture_and_city(h["place"])
 
         # tを分割する
         route, station, work = estate_tag_route_station_work(t)
@@ -196,12 +176,6 @@ def picup_estates(estate_elems):
 def create_hash(txt):
     hash = hashlib.sha256(txt.encode("utf-8")).hexdigest()
     return hash
-
-
-# pandasでCSV変換
-def to_csv(estates, filename):
-    df = pd.DataFrame(data=estates)
-    df.to_csv(filename, index=False)
 
 
 def create_time_check(filename):
@@ -258,7 +232,7 @@ def web_to_csv_and_db(get_url, csv_filename):
         # 処理前に3秒間隔をあける
         time.sleep(3)
         estates = picup_estates(get_estate(get_url))
-        to_csv(estates, csv_filename)
+        mp.to_csv(estates, csv_filename)
 
         result = insert_estate_csv(csv_filename)
 
