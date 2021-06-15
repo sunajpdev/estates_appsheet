@@ -3,7 +3,10 @@ import unittest as ut
 from estates import main
 from estates.Mydb import Mydb
 
-from bs4 import BeautifulSoup
+
+# テスト開始ごとにデータを削除する
+mydb = Mydb()
+mydb.engine.execute("DELETE FROM estates;")
 
 
 class MainTest(ut.TestCase):
@@ -191,7 +194,7 @@ class MainTest(ut.TestCase):
         # データがある場合
         csv_filename = "tests/csv/test_data01.csv"
         res = main.insert_estate_csv(csv_filename)
-        self.assertEqual(0, res)
+        self.assertEqual(15, res)
 
         # データがない場合
         csv_filename = "tests/csv/test_nodata.csv"

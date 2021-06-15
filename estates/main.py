@@ -237,7 +237,7 @@ def insert_estate_csv(csv_filename):
 
     cnt = 0
     for row in rows:
-        res = db.insert_estate_new_data(row)
+        res = db.insert_estate(row)
         if res:
             print(row["price"], row["note"], row["url"])
             cnt += 1
