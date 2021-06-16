@@ -7,7 +7,9 @@ from sqlalchemy.ext.declarative import declarative_base
 
 import pandas as pd
 
-from settings import ReadIni as ri
+from settings import ReadIni
+
+ri = ReadIni()
 
 database = ri.ini.get("DB", "database")
 user = ri.ini.get("DB", "user")
