@@ -120,6 +120,31 @@ class MydbTest(ut.TestCase):
         estate = session.query(Estate).filter(Estate.id == id).first()
         self.assertEqual(estate.id, res)
 
+        row = {
+            "id": "6dfea9319b31d93d520d1c0cf2f02b997479ffcf3c42e63929b1128689321c86",
+            "note": "下和泉３（下飯田駅） 4780万円",
+            "price": 4780,
+            "shop": "大成有楽不動産販売(株)横浜センター",
+            "place": "神奈川県横浜市泉区下和泉３",
+            "prefecture": "神奈川県",
+            "city": "横浜市泉区",
+            "station": "下飯田",
+            "route": "ブルーライン",
+            "work": "徒歩23分",
+            "area": 187.17,
+            "buildingarea": 148.22,
+            "buildingyear": "2006年12月",
+            "ldk": "3LLDDKK+S（納戸）",
+            "url": "https://suumo.jp//chukoikkodate/kanagawa/sc_yokohamashiizumi/nc_95695860/",
+            "created": "2021/6/10",
+        }
+
+        id = row["id"]
+        self.mydb.delete_estate(id)
+        res = self.mydb.insert_estate(row)
+        estate = session.query(Estate).filter(Estate.id == id).first()
+        self.assertEqual(estate.id, res)
+
     def test_all_estate_to_csv(self):
         """すべてのestateをCSVに保存"""
         filename = "./tmp/all_estate.csv"

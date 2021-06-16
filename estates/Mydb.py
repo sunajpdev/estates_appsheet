@@ -57,7 +57,7 @@ class Mydb:
                 session.commit()
                 result = estate.id
             except Exception as e:
-                print("[ERROR]", e)
+                print("#ERROR insert_estate#", e)
                 session.rollback()
                 result = False
         else:
