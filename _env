@@ -1,0 +1,8 @@
+[Default]
+mode=Development
+
+[Development]
+config_filename=config_dev.ini
+
+[Production]
+config_filename=config.ini
