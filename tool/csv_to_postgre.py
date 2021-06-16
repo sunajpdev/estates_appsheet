@@ -9,7 +9,7 @@ sys.path.append(str(current_dir) + "/../")
 import pandas as pd
 import time
 
-from estates.Mydb import Mydb
+from estates.mydb import Mydb
 
 start = time.time()
 

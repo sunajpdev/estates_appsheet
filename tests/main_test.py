@@ -1,7 +1,7 @@
 """ メイン処理のテスト """
 import unittest as ut
 from estates import main
-from estates.Mydb import Mydb
+from estates.mydb import Mydb
 
 
 # テスト開始ごとにデータを削除する

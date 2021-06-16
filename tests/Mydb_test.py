@@ -1,5 +1,5 @@
 import unittest as ut
-from estates.Mydb import Mydb
+from estates.mydb import Mydb
 from estates.models import Estate
 from settings_database import session, engine
 
