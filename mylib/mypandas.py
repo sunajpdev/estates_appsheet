@@ -16,3 +16,11 @@ class MyPandas:
             return False
         except ValueError:
             return False
+
+    @classmethod
+    def read_arr_dict(cls, arr_dict):
+        """辞書をデータソースとして読み込む"""
+
+        df = pd.DataFrame(data=arr_dict)
+
+        return df
