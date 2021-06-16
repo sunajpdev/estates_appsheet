@@ -106,6 +106,11 @@ def estate_place(e):
 
 def estate_tag_route_station_work(t):
     """部分HTMLから物件の路線を取得"""
+
+    route = ""
+    station = ""
+    work = ""
+
     if "「" in t and "」" in t:
         res = re.match(r"(.+)「(.+)」(.+)$", t)
         if res:
@@ -113,10 +118,7 @@ def estate_tag_route_station_work(t):
             route = res.group(1) if cnt > 0 else ""
             station = res.group(2) if cnt > 1 else ""
             work = res.group(3) if cnt > 2 else ""
-    else:
-        route = ""
-        station = ""
-        work = ""
+
     return route, station, work
 
 

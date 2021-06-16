@@ -79,6 +79,14 @@ class MainTest(ut.TestCase):
         self.assertEqual(station, "高山団地入口」停より徒歩")
         self.assertEqual(work, "徒歩4分")
 
+        # エラー 山梨 2021-6-17
+        t = "-「「千代田湖入口」バス停徒歩約」徒歩5分"
+        route, station, work = main.estate_tag_route_station_work(t)
+
+        self.assertEqual(route, "-「")
+        self.assertEqual(station, "千代田湖入口」バス停徒歩約")
+        self.assertEqual(work, "徒歩5分")
+
     def test_estate_price(self):
         """価格取得処理のテスト"""
         filename = "tests/html/estates.html"
