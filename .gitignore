@@ -1,10 +1,10 @@
-*.csv
 *.log
 *.bak
 __pycache__
 note/*
 tmp/*.csv
 tmp/*.py
+test/tmp/*.csv
 
 .env
 .vscode/launch.json
