@@ -43,7 +43,6 @@ def set_csv_to_sheet(csv_path, sheet_name):
             body={"values": list(csv.reader(open(csv_path)))},
         )
     except Exception as e:
-        print("### ERROR ###", e)
         result = False
 
     return result

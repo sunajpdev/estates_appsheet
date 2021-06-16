@@ -21,10 +21,12 @@ class MydbTest(ut.TestCase):
         self.mydb = Mydb()
         self.engine = self.mydb.engine
 
-    def test_init(self):
-        """mydbを生成した際DBと接続されているか確認"""
-        res = self.engine
-        self.assertNotEqual(None, res)
+    def test_init_db(self):
+        """テーブルが作成される"""
+        self.mydb.init_db()
+        res = self.mydb.insert_estate(TESTROWS[3])
+
+        self.assertTrue(res)
 
     def test_delete_estate(self):
         """estate 削除"""

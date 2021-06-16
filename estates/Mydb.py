@@ -2,7 +2,7 @@ import pandas as pd
 
 from sqlalchemy import text, exc
 
-from settings_database import session, engine
+from settings_database import session, engine, init_db
 
 from estates.models import Estate
 
@@ -14,6 +14,14 @@ class Mydb:
         self.engine = engine
         self.session = session
         self.text = text
+
+    def init_db(self):
+        """Tableの作成を行う"""
+        init_db()
+
+    def drop_table_estate(self):
+        """EstateTableを削除"""
+        Estate.__table__.drop(engine)
 
     def record_count(self, model, id):
         """レコードの有無をチェックする

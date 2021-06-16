@@ -14,9 +14,11 @@ engine = create_engine(
 
 session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base.query = session.query_property()
+mate = Base.metadata
 
 
 def init_db():
     from estates import models
 
-    Base.metadata.create_all(bind=engine)
+    # Base.metadata.create_all(bind=engine)
+    mate.create_all(bind=engine)
