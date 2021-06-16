@@ -1,7 +1,6 @@
 import pandas as pd
 
 from estates import main
-import settings_city
 
 
 csv_filename = "data/cities_url.csv"
