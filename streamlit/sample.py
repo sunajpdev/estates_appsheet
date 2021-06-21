@@ -32,3 +32,18 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
+
+df = pd.read_csv("data/backup.csv")
+
+
+df = df[df["price"] < 100]["prefectre"]
+# データフレーム
+st.dataframe(df)
+
+
+# plotly
+# st.plotly_chart(fig, width, height, use_container_width=True or Flase)
+
+# bokeh
+# st.bokeh_chart(fig, use_container_width=True or Flase)

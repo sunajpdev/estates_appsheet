@@ -14,7 +14,6 @@ scope = [
 ]
 
 # ダウンロードしたjsonファイル名をクレデンシャル変数に設定（秘密鍵、Pythonファイルから読み込みしやすい位置に置く）
-# keyfile = "python-web-getter-4f9bb7bee43d.json"
 keyfile = cf.ini.get("GSHEET", "keyfile")
 
 # 認証情報設定

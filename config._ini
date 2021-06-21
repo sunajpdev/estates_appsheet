@@ -13,6 +13,6 @@ host=localhost
 dbname=estates_appsheet
 
 [GSHEET]
-keyfile=filepath
+keyfile=python-web-getter.json
 sheetname=estates
 spreadsheet_key=[googlespreadsheetの共有キー]
