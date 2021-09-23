@@ -1,5 +1,6 @@
 *.log
 *.bak
+*.ini
 __pycache__
 note/*
 tmp/*.csv
@@ -7,14 +8,10 @@ tmp/*.py
 test/tmp/*.csv
 
 .env
-.vscode/launch.json
-mail.ini
+.vscode
 estate.ipynb
 init_aws_lightsail.sh
-.vscode/settings.json
 estate.ipynb
 wsl2-docker 開発環境構築.md
-config.ini
-config_dev.ini
 note/sqlalchemy.ipynb
 python-web-getter*.json
